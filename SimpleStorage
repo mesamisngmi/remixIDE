@@ -1,0 +1,49 @@
+// SPDX-License-Identifier: MIT
+// all projects begin with the version pragma
+pragma solidity ^0.8.7; 
+
+//contract is similar to a class in java, and is a keyword in solidity
+contract SimpleStorage{
+   /* there are different types we can work with
+   uint256 favouriteNumber = 5; 
+   bool favouriteBool = true;
+   string favourite String = "String"
+   int favouriteInt = -5;
+   address favouriteAddress = ;
+   bytes32 = "a variable that is 32 bytes in size"
+   */ 
+   //uninitialized variables begin as null values
+   uint256 favouriteNumber;
+   //structs are ways to define new types
+   struct People{
+       uint256 favouriteNumber;
+       string name;
+   }
+   // People public person = People({favouriteNumber: 2, name: "Ragga"}); == define a struct
+   // structName [parameter] variableName = structName({variableNameOne: value, variable nameTwo: value});
+   
+   //initallizes a dynamic array that can be passed values... 
+   People[] public people;
+   //mapping takes a key and spits out the variable associated with it, we are using this to enter a name to find their number
+   mapping(string => uint256)public nameToFavouriteNumber; 
+   //functions are modules that will execute tasks, keyword preceeds the name and within the brackets contains the values that will be passed to it??
+   // we see the store button because there is a public function we can interact with, but we cant see the variables that we are interacting with without making the varible public
+   // there are four types of visible in solidty -- public, private, internal (default), and external (cannot be called by the same contract)
+   //functions only know about the variables within their scope
+   function store(uint256 _favouriteNumber) public{
+    favouriteNumber = _favouriteNumber;
+   }
+   //view and pure are two non-state changing functions, that allow functions to display; view f(x) promise not to modify; pure promises not to read.
+   function retrieve()public view returns(uint256){
+       return favouriteNumber;
+   }
+   // function that adds people
+   // there are two ways to store data in solidity in storage or memory, memory only uses data during the execution of the function
+   function addPerson(string memory _name, uint256 _favouriteNumber)public{
+       //arrayName.push(BEFORE"[]"(values that will be passed))
+       people.push(People(_favouriteNumber, _name));
+       //add to the mapping in the key-value store, so when we add person we can search the mapping, finding the number from the name
+       nameToFavouriteNumber[_name] = _favouriteNumber;
+   }
+   
+}
